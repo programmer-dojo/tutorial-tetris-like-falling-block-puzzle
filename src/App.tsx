@@ -22,6 +22,8 @@ function App() {
 
   let [numDeleted, setNumDeleted] = useState(0)
 
+  let [next, setNext] = useState(getRandomBlock())
+
   window.onkeydown= (e: KeyboardEvent) => {
     e.preventDefault()
     if (e.key === 'ArrowRight') {
@@ -41,10 +43,11 @@ function App() {
       } else {
         setField(getHyojiField(field, fallingBlock))
         setFallingBlock({
-          puzzleBlock: getRandomBlock(),
+          puzzleBlock: next,
           location   : [0, 4] as CellLocation,
           rotation   : 0
         })
+        setNext(getRandomBlock())
       }
     } else if (e.key === 'ArrowUp') {
       let nextBlock = rotate(fallingBlock)
@@ -72,15 +75,16 @@ function App() {
         } else {
           setField(getHyojiField(field, fallingBlock))
           setFallingBlock({
-            puzzleBlock: getRandomBlock(),
+            puzzleBlock: next,
             location   : [0, 4] as CellLocation,
             rotation   : 0
           })
+          setNext(getRandomBlock())
         }
       }, 1000)
       return () => clearInterval(falling)
     }
-  }, [isGameOver, field, fallingBlock])
+  }, [isGameOver, field, fallingBlock, next])
 
   let hyoji = isGameOver
             ? getGameOverField(field)
@@ -94,7 +98,7 @@ function App() {
             <GameField field={hyoji}/>
           </div>
           <div>
-            <NextBlock />
+            <NextBlock block={next} />
             <ShokyoCount number={numDeleted}/>
           </div>
         </div>

@@ -14,6 +14,20 @@ export function fall(fallingBlock: FallingBlock): FallingBlock {
     }
 }
 
+export function goRight(fallingBlock: FallingBlock): FallingBlock {
+    return {
+        puzzleBlock: fallingBlock.puzzleBlock,
+        location   : [ fallingBlock.location[0], fallingBlock.location[1] + 1]
+    }
+}
+
+export function goLeft(fallingBlock: FallingBlock): FallingBlock {
+    return {
+        puzzleBlock: fallingBlock.puzzleBlock,
+        location   : [ fallingBlock.location[0], fallingBlock.location[1] - 1]
+    }
+}
+
 export function isOk(fallingBlock: FallingBlock, field: Field): boolean {
     function isGyouOk(cell: CellLocation): boolean {
         return (0 <= cell[0]) && (cell[0] <= NUM_GYOU - 1)

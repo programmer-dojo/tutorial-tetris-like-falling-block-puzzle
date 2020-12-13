@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import { NUM_GYOU, NUM_RETU } from './Constant';
-import { fall, FallingBlock, isOk } from './FallingBlock';
+import { fall, FallingBlock, goLeft, goRight, isOk } from './FallingBlock';
 import { Field, getGameOverField, getHyojiField } from './Field';
 import GameField from './GameField';
 import NextBlock from './NextBlock';
@@ -18,6 +18,32 @@ function App() {
   } as FallingBlock)
 
   let [isGameOver, setIsGameOver] = useState(false)
+
+  window.onkeydown= (e: KeyboardEvent) => {
+    e.preventDefault()
+    if (e.key === 'ArrowRight') {
+      let nextBlock = goRight(fallingBlock)
+      if (isOk(nextBlock, field)) {
+        setFallingBlock(nextBlock)
+      }
+    } else if (e.key === 'ArrowLeft') {
+      let nextBlock = goLeft(fallingBlock)
+      if (isOk(nextBlock, field)) {
+        setFallingBlock(nextBlock)
+      }
+    } else if (e.key === 'ArrowDown') {
+      let nextBlock = fall(fallingBlock)
+      if (isOk(nextBlock, field)) {
+        setFallingBlock(nextBlock)
+      } else {
+        setField(getHyojiField(field, fallingBlock))
+        setFallingBlock({
+          puzzleBlock: OBlock,
+          location   : [0, 4] as CellLocation
+        })
+      }
+    }
+  }
 
   useEffect(() => {
     if (!isGameOver) {

@@ -21,3 +21,28 @@ export function getGameOverField(field: Field): Field {
         return gyou.map((cell) => cell === undefined ? undefined : 'gray')
     })
 }
+
+export function getClearedGyou(field: Field): number[] {
+    return field.reduce((acc, line, lineNo) => {
+        if (line.includes(undefined)) {
+            return acc
+        } else {
+            return [...acc, lineNo ]
+        }
+    }, [] as number[])
+}
+
+export function clearGyou(field: Field): Field {
+    let newField = field.map(gyou => gyou.map(cell => cell))
+    let gyou = getClearedGyou(field)
+
+    field.forEach((line, index) => {
+        if (!gyou.includes(index)) {
+            let numDown = gyou
+                .filter(gyouNo => index < gyouNo)
+                .length
+            newField[index + numDown] = field[index].concat()
+            }
+        })
+    return newField
+}

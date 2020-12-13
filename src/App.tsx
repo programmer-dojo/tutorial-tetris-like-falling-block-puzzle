@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import { NUM_GYOU, NUM_RETU } from './Constant';
 import { fall, FallingBlock, goLeft, goRight, isOk } from './FallingBlock';
-import { Field, getGameOverField, getHyojiField } from './Field';
+import { clearGyou, Field, getClearedGyou, getGameOverField, getHyojiField } from './Field';
 import GameField from './GameField';
 import NextBlock from './NextBlock';
 import { CellLocation, OBlock } from './PuzzleBlock';
@@ -18,6 +18,8 @@ function App() {
   } as FallingBlock)
 
   let [isGameOver, setIsGameOver] = useState(false)
+
+  let [numDeleted, setNumDeleted] = useState(0)
 
   window.onkeydown= (e: KeyboardEvent) => {
     e.preventDefault()
@@ -47,6 +49,11 @@ function App() {
 
   useEffect(() => {
     if (!isGameOver) {
+      if (getClearedGyou(field).length !== 0) {
+        setField(clearGyou(field))
+        setNumDeleted(num => num + getClearedGyou(field).length)
+      }
+
       if (field[0].map(cell => cell === undefined).includes(false)) {
         setIsGameOver(true)
       }
@@ -80,7 +87,7 @@ function App() {
           </div>
           <div>
             <NextBlock />
-            <ShokyoCount />
+            <ShokyoCount number={numDeleted}/>
           </div>
         </div>
       </header>

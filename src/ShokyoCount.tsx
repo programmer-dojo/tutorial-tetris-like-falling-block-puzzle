@@ -1,6 +1,6 @@
 import React from 'react';
 
-function ShokyoCount(props: {}) {
+function ShokyoCount(props: { number: number}) {
     return (
         <div style={{
             marginTop: '10%',
@@ -19,7 +19,7 @@ function ShokyoCount(props: {}) {
                 paddingRight: '5%',
                 color: 'khaki'
             }}>
-                0
+                {props.number}
             </div>
             
         </div>

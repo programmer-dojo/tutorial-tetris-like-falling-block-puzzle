@@ -1,12 +1,11 @@
 import React from 'react';
-import { NUM_GYOU, NUM_RETU, SIZE_BLOCK } from './Constant';
+import { NUM_RETU, SIZE_BLOCK } from './Constant';
+import { Field } from './Field';
 
-function GameField(props: {}) {
-    let field = [...new Array(NUM_GYOU) ]
-        .map(line => [...new Array(NUM_RETU)])
+function GameField(props: { field: Field }) {
     return (
         <div>
-            {field.map((gyou, gyouNo) => {
+            {props.field.map((gyou, gyouNo) => {
                 return <div
                     key={`gyou-${gyouNo}`}
                     style={{
@@ -15,6 +14,7 @@ function GameField(props: {}) {
                     }}
                 >{gyou.map((cell, cellNo) => {
                     return <div key={`cell-${gyouNo}-${cellNo}`} style={{
+                        backgroundColor: cell,
                         display: 'inline-block',
                         width  : SIZE_BLOCK,
                         height : SIZE_BLOCK,

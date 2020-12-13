@@ -5,7 +5,7 @@ import { fall, FallingBlock, goLeft, goRight, isOk } from './FallingBlock';
 import { clearGyou, Field, getClearedGyou, getGameOverField, getHyojiField } from './Field';
 import GameField from './GameField';
 import NextBlock from './NextBlock';
-import { CellLocation, OBlock } from './PuzzleBlock';
+import { CellLocation, getRandomBlock } from './PuzzleBlock';
 import ShokyoCount from './ShokyoCount';
 
 function App() {
@@ -13,7 +13,7 @@ function App() {
     [...new Array(NUM_GYOU) ].map(line => [...new Array(NUM_RETU)]) as Field
   )
   let [fallingBlock, setFallingBlock] = useState({
-    puzzleBlock: OBlock,
+    puzzleBlock: getRandomBlock(),
     location   : [0, 4] as CellLocation
   } as FallingBlock)
 
@@ -40,7 +40,7 @@ function App() {
       } else {
         setField(getHyojiField(field, fallingBlock))
         setFallingBlock({
-          puzzleBlock: OBlock,
+          puzzleBlock: getRandomBlock(),
           location   : [0, 4] as CellLocation
         })
       }
@@ -65,7 +65,7 @@ function App() {
         } else {
           setField(getHyojiField(field, fallingBlock))
           setFallingBlock({
-            puzzleBlock: OBlock,
+            puzzleBlock: getRandomBlock(),
             location   : [0, 4] as CellLocation
           })
         }

@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import { NUM_GYOU, NUM_RETU } from './Constant';
-import { FallingBlock } from './FallingBlock';
+import { fall, FallingBlock } from './FallingBlock';
 import { Field, getHyojiField } from './Field';
 import GameField from './GameField';
 import NextBlock from './NextBlock';
@@ -15,6 +15,14 @@ function App() {
     puzzleBlock: OBlock,
     location   : [0, 4] as CellLocation
   } as FallingBlock)
+
+  useEffect(() => {
+    let falling = setInterval(() => {
+      setFallingBlock(fall(fallingBlock))
+    }, 1000)
+
+    return () => clearInterval(falling)
+  })
 
   return (
     <div className="App">

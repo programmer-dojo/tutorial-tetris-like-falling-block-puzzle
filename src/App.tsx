@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import { NUM_GYOU, NUM_RETU } from './Constant';
-import { fall, FallingBlock, goLeft, goRight, isOk } from './FallingBlock';
+import { fall, FallingBlock, goLeft, goRight, isOk, rotate } from './FallingBlock';
 import { clearGyou, Field, getClearedGyou, getGameOverField, getHyojiField } from './Field';
 import GameField from './GameField';
 import NextBlock from './NextBlock';
@@ -14,7 +14,8 @@ function App() {
   )
   let [fallingBlock, setFallingBlock] = useState({
     puzzleBlock: getRandomBlock(),
-    location   : [0, 4] as CellLocation
+    location   : [0, 4] as CellLocation,
+    rotation   : 0
   } as FallingBlock)
 
   let [isGameOver, setIsGameOver] = useState(false)
@@ -41,8 +42,14 @@ function App() {
         setField(getHyojiField(field, fallingBlock))
         setFallingBlock({
           puzzleBlock: getRandomBlock(),
-          location   : [0, 4] as CellLocation
+          location   : [0, 4] as CellLocation,
+          rotation   : 0
         })
+      }
+    } else if (e.key === 'ArrowUp') {
+      let nextBlock = rotate(fallingBlock)
+      if (isOk(nextBlock, field)) {
+        setFallingBlock(nextBlock)
       }
     }
   }
@@ -66,7 +73,8 @@ function App() {
           setField(getHyojiField(field, fallingBlock))
           setFallingBlock({
             puzzleBlock: getRandomBlock(),
-            location   : [0, 4] as CellLocation
+            location   : [0, 4] as CellLocation,
+            rotation   : 0
           })
         }
       }, 1000)

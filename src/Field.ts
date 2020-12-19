@@ -1,5 +1,5 @@
 import { FallingBlock } from "./FallingBlock";
-import { CellColor } from "./PuzzleBlock";
+import { CellColor, CellLocation } from "./PuzzleBlock";
 
 export type Field = CellColor[][]
 
@@ -9,7 +9,13 @@ export function getHyojiField(field: Field, fallingBlock: FallingBlock): Field {
     let copiedField = field.map(retu => retu.map(cell => cell))
 
     block.cells.forEach(cell => {
-        copiedField[cell[0] + location[0]][cell[1] + location[1]] = block.color
+        let newLocation = [ cell[0], cell[1] ] as CellLocation
+        for (let i = 0; i < fallingBlock.rotation; i++) {
+            newLocation = [ -newLocation[1], newLocation[0] ]
+        }
+        newLocation[0] = newLocation[0] + location[0]
+        newLocation[1] = newLocation[1] + location[1]
+        copiedField[newLocation[0]][newLocation[1]] = block.color
     })
     copiedField[location[0]][location[1]] = block.color
 

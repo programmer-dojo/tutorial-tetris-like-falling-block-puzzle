@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import { NUM_GYOU, NUM_RETU } from './Constant';
 import { fall, FallingBlock, isOk } from './FallingBlock';
-import { Field, getHyojiField } from './Field';
+import { Field, getGameOverField, getHyojiField } from './Field';
 import GameField from './GameField';
 import NextBlock from './NextBlock';
 import { CellLocation, OBlock } from './PuzzleBlock';
@@ -17,29 +17,40 @@ function App() {
     location   : [0, 4] as CellLocation
   } as FallingBlock)
 
-  useEffect(() => {
-    let falling = setInterval(() => {
-      let nextBlock = fall(fallingBlock)
-      if (isOk(nextBlock, field)) {
-        setFallingBlock(nextBlock)
-      } else {
-        setField(getHyojiField(field, fallingBlock))
-        setFallingBlock({
-          puzzleBlock: OBlock,
-          location   : [0, 4] as CellLocation
-        })
-      }
-    }, 1000)
+  let [isGameOver, setIsGameOver] = useState(false)
 
-    return () => clearInterval(falling)
-  })
+  useEffect(() => {
+    if (!isGameOver) {
+      if (field[0].map(cell => cell === undefined).includes(false)) {
+        setIsGameOver(true)
+      }
+
+      let falling = setInterval(() => {
+        let nextBlock = fall(fallingBlock)
+        if (isOk(nextBlock, field)) {
+          setFallingBlock(nextBlock)
+        } else {
+          setField(getHyojiField(field, fallingBlock))
+          setFallingBlock({
+            puzzleBlock: OBlock,
+            location   : [0, 4] as CellLocation
+          })
+        }
+      }, 1000)
+      return () => clearInterval(falling)
+    }
+  }, [isGameOver, field, fallingBlock])
+
+  let hyoji = isGameOver
+            ? getGameOverField(field)
+            : getHyojiField(field, fallingBlock)
 
   return (
     <div className="App">
       <header className="App-header">
         <div style={{ display: 'flex' }}>
           <div>
-            <GameField field={getHyojiField(field, fallingBlock)}/>
+            <GameField field={hyoji}/>
           </div>
           <div>
             <NextBlock />

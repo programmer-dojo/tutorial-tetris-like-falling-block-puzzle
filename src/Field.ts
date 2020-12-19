@@ -15,3 +15,9 @@ export function getHyojiField(field: Field, fallingBlock: FallingBlock): Field {
 
     return copiedField
 }
+
+export function getGameOverField(field: Field): Field {
+    return field.map((gyou) => {
+        return gyou.map((cell) => cell === undefined ? undefined : 'gray')
+    })
+}
